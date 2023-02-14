@@ -46,11 +46,38 @@ const (
 
 const defaultHeartbeat = 2 * time.Minute
 
+type Auth struct {
+	mux   sync.RWMutex
+	token string
+}
+
+func NewAuth(token string) *Auth {
+	auth := &Auth{}
+	auth.Set(token)
+	return auth
+}
+
+// Set will set the custom Firebase token used to authenticate to Firebase.
+func (a *Auth) Set(token string) {
+	a.mux.Lock()
+	a.token = token
+	a.mux.Unlock()
+}
+
+// Get returns the current token being used to authenticate to Firebase.
+func (a *Auth) Get() string {
+	a.mux.RLock()
+	defer a.mux.RUnlock()
+	return a.token
+}
+
 // Firebase represents a location in the cloud.
 type Firebase struct {
 	url           string
 	client        *http.Client
 	clientTimeout time.Duration
+
+	sharedAuth *Auth
 
 	paramsMtx sync.RWMutex
 	params    _url.Values
@@ -107,6 +134,13 @@ func (fb *Firebase) Auth(token string) {
 func (fb *Firebase) Unauth() {
 	fb.paramsMtx.Lock()
 	fb.params.Del(authParam)
+	fb.paramsMtx.Unlock()
+}
+
+// SetSharedAuth adds a referance to a shared auth token
+func (fb *Firebase) SetSharedAuth(auth *Auth) {
+	fb.paramsMtx.Lock()
+	fb.sharedAuth = auth
 	fb.paramsMtx.Unlock()
 }
 
@@ -179,6 +213,11 @@ func (fb *Firebase) Update(v interface{}) error {
 	return err
 }
 
+// Get gets the value of the Firebase reference.
+func (fb *Firebase) Get(v interface{}) error {
+	return fb.Value(v)
+}
+
 // Value gets the value of the Firebase reference.
 func (fb *Firebase) Value(v interface{}) error {
 	_, bytes, err := fb.doRequest("GET", nil)
@@ -194,8 +233,19 @@ func (fb *Firebase) String() string {
 	path := fb.url + "/.json"
 
 	fb.paramsMtx.RLock()
+	params := _url.Values{}
 	if len(fb.params) > 0 {
-		path += "?" + fb.params.Encode()
+		for k, v := range fb.params {
+			params[k] = v
+		}
+	}
+
+	if fb.sharedAuth != nil {
+		params.Set(authParam, fb.sharedAuth.Get())
+	}
+
+	if len(params) > 0 {
+		path += "?" + params.Encode()
 	}
 	fb.paramsMtx.RUnlock()
 	return path
@@ -215,6 +265,7 @@ func (fb *Firebase) copy() *Firebase {
 		params:         _url.Values{},
 		client:         fb.client,
 		clientTimeout:  fb.clientTimeout,
+		sharedAuth:     fb.sharedAuth,
 		stopWatching:   make(chan struct{}),
 		watchHeartbeat: defaultHeartbeat,
 		eventFuncs:     map[string]chan struct{}{},
