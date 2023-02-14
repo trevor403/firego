@@ -12,8 +12,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/zabawaba99/firego/firetest"
-	"github.com/zabawaba99/firego/sync"
+	"github.com/trevor403/firego/firetest"
+	"github.com/trevor403/firego/sync"
 )
 
 type testEvent struct {

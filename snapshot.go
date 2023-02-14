@@ -3,7 +3,7 @@ package firego
 import (
 	"strings"
 
-	"github.com/zabawaba99/firego/sync"
+	"github.com/trevor403/firego/sync"
 )
 
 // DataSnapshot instances contains data from a Firebase reference.

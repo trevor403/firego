@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/zabawaba99/firego"
+	"github.com/trevor403/firego"
 )
 
 func ExampleFirebase_Auth() {

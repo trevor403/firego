@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zabawaba99/firego/sync"
+	"github.com/trevor403/firego/sync"
 )
 
 // ChildEventFunc is the type of function that is called for every

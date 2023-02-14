@@ -3,7 +3,7 @@
 ## Deprecated in favor of [firebase/firebase-admin-go](https://github.com/firebase/firebase-admin-go).
 
 ---
-[![Build Status](https://travis-ci.org/zabawaba99/firego.svg?branch=v1)](https://travis-ci.org/zabawaba99/firego) [![Coverage Status](https://coveralls.io/repos/github/zabawaba99/firego/badge.svg?branch=v1)](https://coveralls.io/github/zabawaba99/firego?branch=v1)
+[![Build Status](https://travis-ci.org/trevor403/firego.svg?branch=v1)](https://travis-ci.org/trevor403/firego) [![Coverage Status](https://coveralls.io/repos/github/trevor403/firego/badge.svg?branch=v1)](https://coveralls.io/github/trevor403/firego?branch=v1)
 ---
 
 A Firebase client written in Go
@@ -11,7 +11,7 @@ A Firebase client written in Go
 ## Installation
 
 ```bash
-go get -u gopkg.in/zabawaba99/firego.v1
+go get -u gopkg.in/trevor403/firego.v1
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ go get -u gopkg.in/zabawaba99/firego.v1
 Import firego
 
 ```go
-import "gopkg.in/zabawaba99/firego.v1"
+import "gopkg.in/trevor403/firego.v1"
 ```
 
 Create a new firego reference
@@ -72,7 +72,7 @@ f.Auth("some-token-that-was-created-for-me")
 f.Unauth()
 ```
 
-Visit [Fireauth](https://github.com/zabawaba99/fireauth) if you'd like to generate your own auth tokens
+Visit [Fireauth](https://github.com/trevor403/fireauth) if you'd like to generate your own auth tokens
 
 ### Get Value
 
@@ -172,7 +172,7 @@ if err := usersRef.Set(v); err != nil {
 
 ```
 
-Check the [GoDocs](http://godoc.org/gopkg.in/zabawaba99/firego.v1) or
+Check the [GoDocs](http://godoc.org/gopkg.in/trevor403/firego.v1) or
 [Firebase Documentation](https://www.firebase.com/docs/rest/) for more details
 
 ## Running Tests

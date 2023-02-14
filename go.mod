@@ -1,4 +1,4 @@
-module github.com/zabawaba99/firego
+module github.com/trevor403/firego
 
 go 1.18
 
